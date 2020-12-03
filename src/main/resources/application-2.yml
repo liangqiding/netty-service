@@ -1,0 +1,5 @@
+server:
+  port: 10002
+netty:
+  port: 20002
+

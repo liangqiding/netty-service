@@ -1,0 +1,44 @@
+############################################################################################################
+#  idea Program Argument 设置 --spring.profiles.active=1   根据（1，2，3，。。。）枚举读取不同配置文件端口
+############################################################################################################
+zookeeper:
+  enable: false
+  address: 192.168.60.119:2181
+  timeout: 4000
+spring:
+  # mongodb
+  data:
+    mongodb:
+      database: i2dsp_test_mongodb
+      host: 192.168.188.104
+      #        password: admin
+      port: 27017
+      #        username: admin
+      #      host: 192.168.188.104
+      #      host: 210.5.30.198
+#      uri: mongodb://admin:i2dsp@192.168.188.104:27017/i2dsp_test_mongodb?maxpoolsize=10&minpoolsize=1&maxidletimems=600000&maxlifetimems=1800000
+#      uri: mongodb://admin:i2dsp@210.5.30.198:27017/i2dsp_emg_base?maxpoolsize=10&minpoolsize=1&maxidletimems=600000&maxlifetimems=1800000
+
+version: '3'
+services:
+  # 指定服务名称
+  my_elasticsearch:
+    # 指定服务使用的镜像
+    image: my-test/my_elasticsearch:0.0.1-SNAPSHOT
+    # 指定容器名称
+    container_name: my_elasticsearch
+    # 指定服务运行的端口
+    ports:
+      - 39000:39000
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - /etc/localtime:/etc/localtime
+  zookeeper:
+    image: zookeeper:latest
+    ports:
+      - 2181:2181
+    restart: always
+    container_name: zookeeper
+

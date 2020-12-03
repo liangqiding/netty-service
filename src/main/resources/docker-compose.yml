@@ -1,0 +1,37 @@
+version: '3'
+#
+services:
+  # 指定服务名称
+  my_elasticsearch:
+    # 指定服务使用的镜像
+    image: my-test/my_elasticsearch:0.0.1-SNAPSHOT
+    # 指定容器名称
+    container_name: my_elasticsearch
+    # 指定服务运行的端口
+    ports:
+      - 39000:39000
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - /etc/localtime:/etc/localtime
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - 2181:2181
+    restart: always
+    container_name: zookeeper
+  kafka:
+    image: wurstmeister/kafka:latest
+    restart: always
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.60.119
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_BROKER_ID: 0
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://192:168:60:119:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+    volumes:
+      - ./kafka-logs:/kafka
+      - /var/run/docker.sock:/var/run/docker.sock
